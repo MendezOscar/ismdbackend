@@ -15,15 +15,22 @@ namespace ismdbackend.Models
         {
         }
 
+        public virtual DbSet<CambioRiesgos> CambioRiesgos { get; set; }
+        public virtual DbSet<Cambios> Cambios { get; set; }
         public virtual DbSet<Capacidad> Capacidad { get; set; }
         public virtual DbSet<CatalogoCliente> CatalogoCliente { get; set; }
         public virtual DbSet<CatalogoTecnico> CatalogoTecnico { get; set; }
+        public virtual DbSet<Incidente> Incidente { get; set; }
         public virtual DbSet<ModeloEntrega> ModeloEntrega { get; set; }
         public virtual DbSet<Proveedor> Proveedor { get; set; }
+        public virtual DbSet<Proyecto> Proyecto { get; set; }
+        public virtual DbSet<Pruebas> Pruebas { get; set; }
+        public virtual DbSet<RecursoCambio> RecursoCambio { get; set; }
         public virtual DbSet<RecursoDetalle> RecursoDetalle { get; set; }
         public virtual DbSet<RecursoEncabezado> RecursoEncabezado { get; set; }
         public virtual DbSet<Requerimiento> Requerimiento { get; set; }
         public virtual DbSet<Riesgo> Riesgo { get; set; }
+        public virtual DbSet<Usuario> Usuario { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -36,6 +43,26 @@ namespace ismdbackend.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<CambioRiesgos>(entity =>
+            {
+                entity.HasKey(e => e.IdCambioRiego);
+
+                entity.ToTable("cambio_riesgos");
+
+                entity.Property(e => e.IdRiego).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Cambios>(entity =>
+            {
+                entity.HasKey(e => e.IdCambio);
+
+                entity.ToTable("cambios");
+
+                entity.Property(e => e.Razon).IsUnicode(false);
+
+                entity.Property(e => e.Solicitante).IsUnicode(false);
+            });
+
             modelBuilder.Entity<Capacidad>(entity =>
             {
                 entity.HasKey(e => e.IdCapacidad)
@@ -100,6 +127,17 @@ namespace ismdbackend.Models
                     .HasConstraintName("fk_CatalogoTecnico");
             });
 
+            modelBuilder.Entity<Incidente>(entity =>
+            {
+                entity.HasKey(e => e.IdIncidente);
+
+                entity.ToTable("incidente");
+
+                entity.Property(e => e.Descripcion).IsUnicode(false);
+
+                entity.Property(e => e.Nombre).IsUnicode(false);
+            });
+
             modelBuilder.Entity<ModeloEntrega>(entity =>
             {
                 entity.HasKey(e => e.IdModelo)
@@ -130,6 +168,43 @@ namespace ismdbackend.Models
                 entity.Property(e => e.Tipo)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Proyecto>(entity =>
+            {
+                entity.HasKey(e => e.IdProyecto);
+
+                entity.ToTable("proyecto");
+
+                entity.Property(e => e.Descripcion).IsUnicode(false);
+
+                entity.Property(e => e.Encargado)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Nombre)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Solicitante)
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Pruebas>(entity =>
+            {
+                entity.HasKey(e => e.IdPrueba);
+
+                entity.ToTable("pruebas");
+
+                entity.Property(e => e.Observaciones).IsUnicode(false);
+            });
+
+            modelBuilder.Entity<RecursoCambio>(entity =>
+            {
+                entity.HasKey(e => e.IdRecursoCambio);
+
+                entity.ToTable("recurso_cambio");
             });
 
             modelBuilder.Entity<RecursoDetalle>(entity =>
@@ -217,6 +292,25 @@ namespace ismdbackend.Models
                 entity.Property(e => e.Tipo)
                     .HasMaxLength(50)
                     .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Usuario>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("usuario");
+
+                entity.Property(e => e.Clave)
+                    .HasColumnName("clave")
+                    .IsUnicode(false);
+
+                entity.Property(e => e.IdUsuario).ValueGeneratedOnAdd();
+
+                entity.Property(e => e.Nombre)
+                    .HasColumnName("nombre")
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Tipo).HasColumnName("tipo");
             });
 
             OnModelCreatingPartial(modelBuilder);

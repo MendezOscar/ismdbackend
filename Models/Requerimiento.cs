@@ -17,6 +17,7 @@ namespace ismdbackend.Models
         public string Prioridad { get; set; }
         public string Estado { get; set; }
         public string Programador { get; set; }
+        public int? IdProyecto { get; set; }
 
         public virtual ICollection<CatalogoTecnico> CatalogoTecnico { get; set; }
     }
