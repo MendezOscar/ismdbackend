@@ -8,5 +8,6 @@ namespace ismdbackend.Models
         public int IdCambio { get; set; }
         public string Solicitante { get; set; }
         public string Razon { get; set; }
+        public int? IdProyecto { get; set; }
     }
 }

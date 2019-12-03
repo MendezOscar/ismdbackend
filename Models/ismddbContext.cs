@@ -22,6 +22,7 @@ namespace ismdbackend.Models
         public virtual DbSet<CatalogoTecnico> CatalogoTecnico { get; set; }
         public virtual DbSet<Incidente> Incidente { get; set; }
         public virtual DbSet<ModeloEntrega> ModeloEntrega { get; set; }
+        public virtual DbSet<Permiso> Permiso { get; set; }
         public virtual DbSet<Proveedor> Proveedor { get; set; }
         public virtual DbSet<Proyecto> Proyecto { get; set; }
         public virtual DbSet<Pruebas> Pruebas { get; set; }
@@ -57,6 +58,8 @@ namespace ismdbackend.Models
                 entity.HasKey(e => e.IdCambio);
 
                 entity.ToTable("cambios");
+
+                entity.Property(e => e.IdProyecto).HasColumnName("idProyecto");
 
                 entity.Property(e => e.Razon).IsUnicode(false);
 
@@ -145,8 +148,23 @@ namespace ismdbackend.Models
 
                 entity.ToTable("modelo_entrega");
 
+                entity.Property(e => e.IdProtecto).HasColumnName("idProtecto");
+
                 entity.Property(e => e.Tipo)
                     .HasMaxLength(25)
+                    .IsUnicode(false);
+            });
+
+            modelBuilder.Entity<Permiso>(entity =>
+            {
+                entity.HasKey(e => e.IdPermiso)
+                    .HasName("PK__permiso__0D626EC86EC3905A");
+
+                entity.ToTable("permiso");
+
+                entity.Property(e => e.Nombre)
+                    .HasColumnName("nombre")
+                    .HasMaxLength(50)
                     .IsUnicode(false);
             });
 
@@ -296,21 +314,22 @@ namespace ismdbackend.Models
 
             modelBuilder.Entity<Usuario>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.IdUsuario)
+                    .HasName("PK__usuario__5B65BF97D362F1EB");
 
                 entity.ToTable("usuario");
 
                 entity.Property(e => e.Clave)
                     .HasColumnName("clave")
-                    .IsUnicode(false);
-
-                entity.Property(e => e.IdUsuario).ValueGeneratedOnAdd();
-
-                entity.Property(e => e.Nombre)
-                    .HasColumnName("nombre")
+                    .HasMaxLength(50)
                     .IsUnicode(false);
 
                 entity.Property(e => e.Tipo).HasColumnName("tipo");
+
+                entity.Property(e => e.Username)
+                    .HasColumnName("username")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

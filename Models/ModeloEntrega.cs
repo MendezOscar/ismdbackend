@@ -7,5 +7,6 @@ namespace ismdbackend.Models
     {
         public int IdModelo { get; set; }
         public string Tipo { get; set; }
+        public int? IdProtecto { get; set; }
     }
 }
